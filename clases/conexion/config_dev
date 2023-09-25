@@ -1,9 +1,1 @@
-{
-    "conexion":{
-        "server" : "localhost",
-        "user" : "postgres",
-        "password" : "123456",
-        "database" : "apirest_i9u3",
-        "port": "5432"
-    }
-}
+
