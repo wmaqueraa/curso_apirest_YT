@@ -37,6 +37,15 @@ class conexion {
     private function datosConexion(){
         $direccion = dirname(__FILE__);
         $jsondata = file_get_contents($direccion . "/" . "config");
+        //return json_decode($jsondata, true);
+
+        $DB_HOST = $_ENV["DB_HOST"];
+        $DB_USER = $_ENV["DB_USER"];
+        $DB_PASSWORD = $_ENV["DB_PASSWORD"];
+        $DB_NAME = $_ENV["DB_NAME"];
+        $DB_PORT = $_ENV["DB_PORT"];
+
+        $jsondata = '{"DB_HOST":'.$DB_HOST.',"DB_USER":'.$DB_USER.',"DB_PASSWORD":'.$DB_PASSWORD.',"DB_NAME":'.$DB_NAME.',"$DB_PORT":'.$DB_PORT.'}';
         return json_decode($jsondata, true);
     }
 
