@@ -65,7 +65,9 @@ class conexion {
         //$results = $this->conexion->query($sqlstr);
         $results = pg_query($this->conexion,$sqlstr);
         //return $this->conexion->affected_rows;
-        return  pg_num_rows($results);
+        $filas = pg_affected_rows($results);
+        //return  pg_num_rows($results);
+        return $filas;
     }
 
 
@@ -74,10 +76,13 @@ class conexion {
          //$results = $this->conexion->query($sqlstr);
          $results = pg_query($this->conexion,$sqlstr);
          //$filas = $this->conexion->affected_rows;
-         $filas =  pg_num_rows($results);
+         $filas = pg_affected_rows($results); // pg_num_rows($results);
+         $rows = pg_fetch_row($results);
+         //print_r($rows);
          if($filas >= 1){
-            $resultados = pg_fetch_array($results);
-            return  $resultados[0];
+            //$resultados = pg_fetch_array($results); // pg_fetch_all($results); // 
+            //return  $resultados[0];
+            return $rows[0];
          }else{
              return 0;
          }

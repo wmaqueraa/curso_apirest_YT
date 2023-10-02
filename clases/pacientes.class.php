@@ -17,6 +17,16 @@ class pacientes extends conexion {
     private $correo = "";
     private $token = "";
 //912bc00f049ac8464472020c5cd06759
+    public function tablaUsuarios(){
+        $query = "SELECT usuarioid,usuario,password ,estado FROM Usuarios";
+        $datos = parent::obtenerDatos($query);
+        return ($datos);
+    }
+    public function tablaPacientes(){
+        $query = "SELECT PacienteId,Nombre,DNI,Telefono,Correo,fechanacimiento,direccion FROM " . $this->table . " ORDER BY PacienteId";
+        $datos = parent::obtenerDatos($query);
+        return ($datos);
+    }
 
     public function listaPacientes($pagina = 1){
         $inicio  = 0 ;
@@ -86,7 +96,9 @@ class pacientes extends conexion {
     private function insertarPaciente(){
         $query = "INSERT INTO " . $this->table . " (DNI,Nombre,Direccion,CodigoPostal,Telefono,Genero,FechaNacimiento,Correo)
         values
-        ('" . $this->dni . "','" . $this->nombre . "','" . $this->direccion ."','" . $this->codigoPostal . "','"  . $this->telefono . "','" . $this->genero . "','" . $this->fechaNacimiento . "','" . $this->correo . "')"; 
+        ('" . $this->dni . "','" . $this->nombre . "','" . $this->direccion ."','" . $this->codigoPostal . "','"  . $this->telefono . "','" . $this->genero . "','" . $this->fechaNacimiento . "','" . $this->correo . "') RETURNING pacienteid"; 
+        //echo 'INSERT = '.$query;
+        
         $resp = parent::nonQueryId($query);
         if($resp){
              return $resp;

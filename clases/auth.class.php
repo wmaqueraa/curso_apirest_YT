@@ -20,10 +20,10 @@ class auth extends conexion{
             $datos = $this->obtenerDatosUsuario($usuario);
             if($datos){
                 //verificar si la contraseña es igual
-                    if($password == $datos[0]['Password']){
-                            if($datos[0]['Estado'] == "Activo"){
+                    if($password == $datos[0]['password']){
+                            if($datos[0]['estado'] == "Activo"){
                                 //crear el token
-                                $verificar  = $this->insertarToken($datos[0]['UsuarioId']);
+                                $verificar  = $this->insertarToken($datos[0]['usuarioid']);
                                 if($verificar){
                                         // si se guardo
                                         $result = $_respustas->response;
@@ -45,7 +45,7 @@ class auth extends conexion{
                     }
             }else{
                 //no existe el usuario
-                return $_respustas->error_200("El usuaro $usuario  no existe ");
+                return $_respustas->error_200("El usuario $usuario  no existe ");
             }
         }
     }
@@ -54,8 +54,10 @@ class auth extends conexion{
 
     private function obtenerDatosUsuario($correo){
         $query = "SELECT UsuarioId,Password,Estado FROM usuarios WHERE Usuario = '$correo'";
+        //echo $query;
         $datos = parent::obtenerDatos($query);
-        if(isset($datos[0]["UsuarioId"])){
+        //print_r($datos);
+        if(isset($datos[0]["usuarioid"])){
             return $datos;
         }else{
             return 0;
@@ -68,8 +70,10 @@ class auth extends conexion{
         $token = bin2hex(openssl_random_pseudo_bytes(16,$val));
         $date = date("Y-m-d H:i");
         $estado = "Activo";
-        $query = "INSERT INTO usuarios_token (UsuarioId,Token,Estado,Fecha)VALUES('$usuarioid','$token','$estado','$date')";
+        $query = "INSERT INTO usuarios_token (UsuarioId,Token,Estado,Fecha)VALUES('$usuarioid','$token','$estado',now())";
+        
         $verifica = parent::nonQuery($query);
+        //echo 'Nro Registros = '.$verifica;
         if($verifica){
             return $token;
         }else{
